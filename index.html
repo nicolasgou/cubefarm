@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080a09" />
+  <meta name="description" content="The Cube Farm desenvolve tecnologia brasileira para fazendas verticais modulares, robótica autônoma e cultivo inteligente." />
+  <title>The Cube Farm — O futuro do cultivo é cúbico</title>
+
+  <!-- Tailwind CSS via CDN: ideal para protótipo/MVP. Para produção, compile o Tailwind. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#080A09',
+            panel: '#101412',
+            line: '#252D28',
+            leaf: '#B8FF5C',
+            orange: '#FF6B35',
+            muted: '#A5ADA7'
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            glow: '0 0 70px rgba(184,255,92,.12)',
+            orange: '0 0 45px rgba(255,107,53,.18)'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { background:#080a09; color:#f5f7f4; font-family:Inter,ui-sans-serif,system-ui,sans-serif; }
+    ::selection { background:#b8ff5c; color:#080a09; }
+    .grid-bg {
+      background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 92%);
+    }
+    .glass { background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018)); backdrop-filter:blur(18px); }
+    .eyebrow { font-family:"DM Mono",monospace; letter-spacing:.14em; text-transform:uppercase; }
+    .text-gradient { background:linear-gradient(100deg,#fff 10%,#c6d0c8 55%,#b8ff5c 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .hero-glow { background:radial-gradient(ellipse at 50% 48%,rgba(184,255,92,.12),transparent 45%),radial-gradient(ellipse at 68% 58%,rgba(255,107,53,.11),transparent 35%); }
+    .cube { position:absolute; border:1px solid rgba(184,255,92,.24); background:linear-gradient(135deg,rgba(184,255,92,.08),rgba(255,255,255,.015)); box-shadow:inset 0 0 22px rgba(184,255,92,.035); transform:skewY(-28deg) rotate(28deg); border-radius:3px; }
+    .cube::after { content:""; position:absolute; inset:9px; border:1px solid rgba(255,255,255,.08); }
+    .cube-lit { border-color:rgba(255,107,53,.8); box-shadow:0 0 25px rgba(255,107,53,.16),inset 0 0 24px rgba(255,107,53,.1); }
+    .robot { width:12px;height:12px;border-radius:3px;background:#ff6b35;box-shadow:0 0 24px rgba(255,107,53,.8); position:absolute; animation:robotMove 8s ease-in-out infinite; }
+    @keyframes robotMove { 0%,100%{transform:translate(0,0)} 25%{transform:translate(118px,10px)} 50%{transform:translate(118px,92px)} 75%{transform:translate(30px,92px)} }
+    .float { animation:float 7s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+    .reveal { opacity:0; transform:translateY(18px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .scanline { background:linear-gradient(90deg,transparent,rgba(184,255,92,.5),transparent); height:1px; animation:scan 5s linear infinite; }
+    @keyframes scan { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+    .btn-primary { transition:transform .25s ease,box-shadow .25s ease,background .25s ease; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 35px rgba(255,107,53,.25); background:#ff7c4b; }
+    .nav-link { transition:color .2s ease; }
+    .nav-link:hover { color:#b8ff5c; }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; transition-duration:.01ms!important; } .reveal {opacity:1;transform:none;} }
+  </style>
+</head>
+<body class="overflow-x-hidden antialiased">
+  <!-- Header -->
+  <header class="fixed top-0 z-50 w-full border-b border-white/[.07] bg-ink/75 backdrop-blur-xl">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8" aria-label="Navegação principal">
+      <a href="#inicio" class="flex items-center gap-3" aria-label="The Cube Farm, início">
+        <span class="relative flex h-9 w-9 items-center justify-center">
+          <span class="absolute inset-1 rotate-45 border border-leaf/80"></span>
+          <span class="absolute inset-[9px] rotate-45 border border-orange"></span>
+          <span class="h-1.5 w-1.5 rounded-full bg-leaf"></span>
+        </span>
+        <span class="text-[15px] font-semibold tracking-[-.04em]">the cube<span class="text-leaf"> farm</span><span class="ml-1 align-top text-[9px] text-white/40">BR</span></span>
+      </a>
+      <div class="hidden items-center gap-8 text-sm text-white/65 md:flex">
+        <a class="nav-link" href="#tecnologia">Tecnologia</a>
+        <a class="nav-link" href="#como-funciona">Como funciona</a>
+        <a class="nav-link" href="#manifesto">Nossa visão</a>
+        <a class="nav-link" href="#time">Time</a>
+      </div>
+      <a href="#contato" class="rounded-full border border-white/15 px-4 py-2.5 text-xs font-semibold transition hover:border-leaf/70 hover:text-leaf sm:text-sm">Fale com nosso time <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="inicio" class="relative flex min-h-[850px] items-center overflow-hidden pt-28 md:min-h-[900px]">
+      <div class="grid-bg absolute inset-0 opacity-70"></div><div class="hero-glow absolute inset-0"></div>
+      <div class="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-5 pb-20 pt-10 md:px-8 lg:grid-cols-[1.02fr_.98fr] lg:gap-4">
+        <div class="relative z-10 max-w-2xl">
+          <div class="mb-7 inline-flex items-center gap-2 rounded-full border border-leaf/20 bg-leaf/[.055] px-3.5 py-2 text-[11px] text-leaf">
+            <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-leaf"></span>
+            <span class="eyebrow">Engenharia brasileira · Agricultura inteligente</span>
+          </div>
+          <h1 class="text-gradient max-w-3xl text-5xl font-semibold leading-[1.04] tracking-[-.065em] sm:text-6xl md:text-7xl xl:text-[82px]">
+            O futuro do cultivo não é plano. É cúbico.
+          </h1>
+          <p class="mt-7 max-w-xl text-base leading-7 text-white/60 md:text-lg md:leading-8">
+            Estamos desenvolvendo uma nova geração de fazendas verticais: modulares, conectadas e automatizadas por robótica e inteligência de cultivo — projetadas para produzir mais, usando melhor cada metro quadrado.
+          </p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href="#contato" class="btn-primary inline-flex items-center justify-center gap-3 rounded-full bg-orange px-6 py-3.5 text-sm font-semibold text-white">Conheça o futuro do cultivo <span aria-hidden="true">↗</span></a>
+            <a href="#tecnologia" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 px-6 py-3.5 text-sm font-medium text-white/80 transition hover:border-white/35 hover:text-white">Explore a tecnologia <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/10 pt-6 text-xs text-white/45">
+            <span class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-leaf"></span> Tecnologia em desenvolvimento no Brasil</span>
+            <span class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-orange"></span> Robótica + software + biologia</span>
+          </div>
+        </div>
+
+        <!-- Visual conceitual: substitua por render 3D/vídeo real quando disponível -->
+        <div class="relative mx-auto flex aspect-square w-full max-w-[610px] items-center justify-center">
+          <div class="absolute inset-8 rounded-full border border-white/[.07]"></div>
+          <div class="absolute inset-16 rounded-full border border-dashed border-leaf/15"></div>
+          <div class="absolute inset-24 rounded-full bg-leaf/[.04] blur-3xl"></div>
+          <div class="absolute left-[14%] top-[18%] eyebrow text-[9px] text-white/35">CUBE SYSTEM / 001</div>
+          <div class="absolute right-[10%] top-[29%] flex items-center gap-2 text-[9px] text-leaf/70"><span class="h-1 w-1 rounded-full bg-leaf"></span> GRID ONLINE</div>
+          <div class="absolute bottom-[16%] left-[10%] text-[9px] text-white/35">X / Y / Z · MODULAR ARRAY</div>
+          <div class="relative h-[330px] w-[330px] sm:h-[400px] sm:w-[400px]">
+            <div class="cube left-[12%] top-[16%] h-20 w-20"></div><div class="cube left-[36%] top-[7%] h-20 w-20"></div><div class="cube left-[60%] top-[0%] h-20 w-20"></div>
+            <div class="cube left-[0%] top-[39%] h-20 w-20"></div><div class="cube cube-lit left-[24%] top-[30%] h-20 w-20"></div><div class="cube left-[48%] top-[22%] h-20 w-20"></div><div class="cube left-[72%] top-[14%] h-20 w-20"></div>
+            <div class="cube left-[12%] top-[62%] h-20 w-20"></div><div class="cube left-[36%] top-[53%] h-20 w-20"></div><div class="cube cube-lit left-[60%] top-[45%] h-20 w-20"></div><div class="cube left-[84%] top-[37%] h-20 w-20"></div>
+            <div class="cube left-[24%] top-[85%] h-20 w-20"></div><div class="cube left-[48%] top-[76%] h-20 w-20"></div><div class="cube left-[72%] top-[68%] h-20 w-20"></div>
+            <div class="robot left-[21%] top-[28%]"></div>
+            <div class="absolute left-[42%] top-[40%] h-24 w-24 rounded-full border border-leaf/20 bg-leaf/5 blur-[1px]"></div>
+            <div class="absolute left-[48%] top-[46%] h-10 w-10 rounded-full border border-leaf/50 bg-leaf/10 shadow-glow"></div>
+            <div class="absolute left-[55%] top-[52%] h-2 w-2 rounded-full bg-leaf shadow-[0_0_18px_#b8ff5c]"></div>
+          </div>
+          <div class="glass float absolute bottom-[9%] right-[1%] rounded-2xl border border-white/10 p-4 shadow-2xl sm:right-0">
+            <div class="flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-leaf/10 text-leaf">⌘</div>
+              <div><p class="text-xs font-medium">Controle inteligente</p><p class="mt-1 text-[10px] text-white/40">Cultivo orientado por dados</p></div>
+              <span class="ml-3 h-1.5 w-1.5 rounded-full bg-leaf"></span>
+            </div>
+          </div>
+          <div class="glass absolute left-[0%] top-[58%] rounded-xl border border-orange/20 px-3 py-2.5 text-[10px] text-white/65 sm:left-[-2%]">
+            <span class="mr-2 text-orange">↗</span>Movimentação autônoma
+          </div>
+        </div>
+      </div>
+      <div class="scanline absolute bottom-0 left-0 right-0 opacity-60"></div>
+    </section>
+
+    <!-- Manifesto -->
+    <section id="manifesto" class="relative border-y border-white/[.07] bg-[#0c100d] py-24 md:py-32">
+      <div class="mx-auto grid max-w-7xl gap-10 px-5 md:px-8 lg:grid-cols-[.65fr_1.35fr] lg:gap-24">
+        <div class="reveal"><p class="eyebrow text-xs text-leaf">01 / Uma nova lógica</p><p class="mt-5 text-sm text-white/40">Não é apenas cultivar em altura.<br>É repensar o espaço por inteiro.</p></div>
+        <div class="reveal">
+          <h2 class="max-w-4xl text-3xl font-medium leading-tight tracking-[-.045em] sm:text-4xl md:text-5xl">A agricultura precisa de uma nova arquitetura. <span class="text-white/35">Nós estamos construindo essa arquitetura em três dimensões.</span></h2>
+          <p class="mt-7 max-w-3xl text-base leading-7 text-white/60">Prateleiras fixas ainda deixam espaço valioso sem produzir. O modelo Cube organiza o cultivo em uma grade tridimensional densa, enquanto robôs movimentam os módulos por cima da estrutura. Menos espaço dedicado à circulação. Mais espaço pensado para o cultivo.</p>
+          <div class="mt-9 flex items-center gap-4 border-t border-white/10 pt-6">
+            <div class="h-10 w-1 rounded-full bg-orange"></div><p class="max-w-2xl text-sm leading-6 text-white/80">Tecnologia concebida para as necessidades do Brasil, unindo engenharia, software e ciência vegetal para aproximar a produção de onde as pessoas vivem.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech cards -->
+    <section id="tecnologia" class="relative py-24 md:py-32">
+      <div class="grid-bg absolute inset-0 opacity-35"></div>
+      <div class="relative mx-auto max-w-7xl px-5 md:px-8">
+        <div class="reveal mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div><p class="eyebrow text-xs text-leaf">02 / Engenharia integrada</p><h2 class="mt-5 max-w-2xl text-4xl font-medium tracking-[-.05em] sm:text-5xl">Quatro pilares.<br><span class="text-white/35">Um sistema inteligente.</span></h2></div>
+          <p class="max-w-md text-sm leading-6 text-white/50">Hardware, software e cultivo trabalham como uma única plataforma — projetada para evoluir a cada ciclo.</p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <article class="glass reveal group rounded-2xl border border-orange/20 p-6 transition duration-300 hover:-translate-y-1 hover:border-orange/60">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-orange/25 bg-orange/[.08] text-orange">
+              <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="1.5"><path d="M4 5h16M4 19h16M6 5v14M18 5v14M6 9h12M6 15h12"/><rect x="9" y="7" width="6" height="5" rx="1"/><path d="M12 12v4"/></svg>
+            </div>
+            <p class="eyebrow mt-7 text-[10px] text-orange">01 / Robótica</p><h3 class="mt-3 text-xl font-semibold tracking-tight">Robótica de topo</h3>
+            <p class="mt-3 text-sm leading-6 text-white/55">Robôs projetados para percorrer os eixos X/Y sobre a grade, localizar módulos e movimentá-los sem depender de corredores para circulação humana.</p>
+            <span class="mt-7 block h-px w-full bg-gradient-to-r from-orange/60 to-transparent"></span>
+          </article>
+          <article class="glass reveal group rounded-2xl border border-leaf/20 p-6 transition duration-300 hover:-translate-y-1 hover:border-leaf/60">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-leaf/25 bg-leaf/[.08] text-leaf">
+              <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="1.5"><path d="m12 2 8 4.5v11L12 22l-8-4.5v-11L12 2Z"/><path d="m4.5 6.8 7.5 4.4 7.5-4.4M12 11.2V22M8 4.3l8 4.6"/></svg>
+            </div>
+            <p class="eyebrow mt-7 text-[10px] text-leaf">02 / Arquitetura</p><h3 class="mt-3 text-xl font-semibold tracking-tight">Densidade cúbica</h3>
+            <p class="mt-3 text-sm leading-6 text-white/55">Módulos organizados em uma estrutura tridimensional aproveitam melhor o volume disponível e permitem dimensionar a fazenda conforme a demanda.</p>
+            <span class="mt-7 block h-px w-full bg-gradient-to-r from-leaf/60 to-transparent"></span>
+          </article>
+          <article class="glass reveal group rounded-2xl border border-leaf/20 p-6 transition duration-300 hover:-translate-y-1 hover:border-leaf/60">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-leaf/25 bg-leaf/[.08] text-leaf">
+              <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="1.5"><path d="M3 12h3l2-7 4 14 3-10 2 3h4"/><circle cx="12" cy="12" r="10" opacity=".35"/></svg>
+            </div>
+            <p class="eyebrow mt-7 text-[10px] text-leaf">03 / Inteligência</p><h3 class="mt-3 text-xl font-semibold tracking-tight">IA & cultivo de precisão</h3>
+            <p class="mt-3 text-sm leading-6 text-white/55">Software para coordenar iluminação, irrigação e nutrientes, acompanhar as condições de cultivo e apoiar decisões com dados de cada ciclo.</p>
+            <span class="mt-7 block h-px w-full bg-gradient-to-r from-leaf/60 to-transparent"></span>
+          </article>
+          <article class="glass reveal group rounded-2xl border border-orange/20 p-6 transition duration-300 hover:-translate-y-1 hover:border-orange/60">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-orange/25 bg-orange/[.08] text-orange">
+              <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-4.3 7-11V5l-7-3-7 3v5c0 6.7 7 11 7 11Z"/><path d="M8 12c2.2-4 5.8-4 8 0-2.2 4-5.8 4-8 0Z"/><path d="M12 9v6"/></svg>
+            </div>
+            <p class="eyebrow mt-7 text-[10px] text-orange">04 / Recursos</p><h3 class="mt-3 text-xl font-semibold tracking-tight">Circuito eficiente</h3>
+            <p class="mt-3 text-sm leading-6 text-white/55">A proposta combina recirculação de água, ambiente controlado e produção próxima ao mercado para buscar menor uso de recursos e menos perdas logísticas.</p>
+            <span class="mt-7 block h-px w-full bg-gradient-to-r from-orange/60 to-transparent"></span>
+          </article>
+        </div>
+        <p class="mt-5 text-xs leading-5 text-white/30">* Resultados de produtividade, consumo de água, uso de insumos e ciclo de cultivo dependem da cultura, do projeto e da validação operacional.</p>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="como-funciona" class="border-y border-white/[.07] bg-[#0c100d] py-24 md:py-32">
+      <div class="mx-auto max-w-7xl px-5 md:px-8">
+        <div class="reveal max-w-3xl"><p class="eyebrow text-xs text-orange">03 / Do módulo à colheita</p><h2 class="mt-5 text-4xl font-medium tracking-[-.05em] sm:text-5xl">Uma fazenda. <span class="text-white/35">Um fluxo coordenado.</span></h2><p class="mt-5 text-base leading-7 text-white/55">Cada etapa conversa com a seguinte. O objetivo é transformar o cultivo em uma operação monitorável, repetível e preparada para escalar.</p></div>
+        <div class="relative mt-16 grid gap-8 md:grid-cols-3 md:gap-5">
+          <div class="absolute left-[16%] right-[16%] top-7 hidden h-px bg-gradient-to-r from-leaf/10 via-leaf/40 to-orange/20 md:block"></div>
+          <article class="reveal relative"><div class="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-leaf/30 bg-ink text-lg font-medium text-leaf">01</div><p class="eyebrow mt-7 text-[10px] text-leaf">Semeio & encaixe</p><h3 class="mt-3 text-2xl font-medium tracking-tight">O módulo entra no sistema.</h3><p class="mt-3 max-w-sm text-sm leading-6 text-white/55">As sementes são distribuídas nos módulos de cultivo, identificados para acompanhar sua jornada desde o início.</p></article>
+          <article class="reveal relative"><div class="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-orange/40 bg-ink text-lg font-medium text-orange">02</div><p class="eyebrow mt-7 text-[10px] text-orange">Movimentação & controle</p><h3 class="mt-3 text-2xl font-medium tracking-tight">A inteligência coordena.</h3><p class="mt-3 max-w-sm text-sm leading-6 text-white/55">A robótica movimenta os módulos na grade e o sistema de controle ajusta os parâmetros de cultivo conforme a estratégia definida.</p></article>
+          <article class="reveal relative"><div class="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-leaf/30 bg-ink text-lg font-medium text-leaf">03</div><p class="eyebrow mt-7 text-[10px] text-leaf">Maturação & distribuição</p><h3 class="mt-3 text-2xl font-medium tracking-tight">A colheita segue o plano.</h3><p class="mt-3 max-w-sm text-sm leading-6 text-white/55">Com base nos critérios de maturação e planejamento, os módulos são encaminhados para a colheita e a distribuição local.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Founders -->
+    <section id="time" class="py-24 md:py-32">
+      <div class="mx-auto max-w-7xl px-5 md:px-8">
+        <div class="reveal mb-12"><p class="eyebrow text-xs text-leaf">04 / Fundadores</p><h2 class="mt-5 text-4xl font-medium tracking-[-.05em] sm:text-5xl">Engenharia e cultivo,<br><span class="text-white/35">na mesma mesa.</span></h2></div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <article class="reveal group relative isolate min-h-[580px] overflow-hidden rounded-2xl border border-white/10 bg-panel">
+            <img src="res/imgs/nicolas-goulart.png" alt="Nicolas Goulart" class="absolute inset-0 h-full w-full object-cover object-top opacity-70 transition duration-700 group-hover:scale-[1.03]" />
+            <<div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 via-45% to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-7 md:p-9">
+              <h3 class="text-3xl font-semibold tracking-tight">Nicolas Goulart</h3>
+              <p class="mt-2 text-sm text-orange">Co-fundador · Engenharia & Tecnologia</p>
+              <p class="mt-5 max-w-lg text-sm leading-7 text-white/80">Engenheiro com formação em Engenharia Elétrica e Eletrônica pela PUC-Campinas, atuando na interseção entre software, automação industrial, sistemas embarcados e inteligência artificial.</p>
+              <a href="https://www.linkedin.com/in/nicolasgou/" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex w-fit items-center gap-2 text-sm text-white/70 transition hover:text-leaf">Conectar no LinkedIn <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="reveal group relative isolate min-h-[580px] overflow-hidden rounded-2xl border border-white/10 bg-panel">
+            <img src="res/imgs/Julia-ferreira.png" alt="Julia Ferreira" class="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.03]" />
+            <<div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 via-45% to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-7 md:p-9">
+              <h3 class="text-3xl font-semibold tracking-tight">Julia Ferreira</h3>
+              <p class="mt-2 text-sm text-leaf">Co-fundadora · Engenharia Agrícola & Cultivo</p>
+              <p class="mt-5 max-w-lg text-sm leading-7 text-white/80">Engenheira Agrícola formada pela Unicamp, conectando conhecimento de produção vegetal e sistemas agrícolas à construção de uma plataforma de cultivo controlado.</p>
+              <a href="https://www.linkedin.com/in/julia-goulart/" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex w-fit items-center gap-2 text-sm text-white/90 transition hover:text-leaf">Conectar no LinkedIn <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        </div>
+        <p class="mt-4 text-xs text-white/30"></p>
+      </div>
+    </section>
+
+    <!-- B2B -->
+    <section id="parcerias" class="relative overflow-hidden border-y border-white/[.07] bg-[#0d110e] py-24 md:py-32">
+      <div class="absolute -right-24 top-0 h-96 w-96 rounded-full bg-orange/[.07] blur-[100px]"></div>
+      <div class="absolute -left-24 bottom-0 h-96 w-96 rounded-full bg-leaf/[.06] blur-[100px]"></div>
+      <div class="relative mx-auto grid max-w-7xl gap-12 px-5 md:px-8 lg:grid-cols-[1fr_.8fr] lg:items-center">
+        <div class="reveal"><p class="eyebrow text-xs text-orange">05 / Para parceiros & investidores</p><h2 class="mt-5 max-w-3xl text-4xl font-medium leading-tight tracking-[-.05em] sm:text-5xl md:text-6xl">A próxima infraestrutura de alimentos pode começar aqui.</h2><p class="mt-6 max-w-2xl text-base leading-7 text-white/55">Estamos abrindo conversas com parceiros que queiram repensar a produção, a distribuição e a disponibilidade de alimentos frescos nas cidades brasileiras.</p>
+          <div class="mt-8 flex flex-wrap gap-2"><span class="rounded-full border border-white/10 px-3 py-2 text-xs text-white/60">Varejo & supermercados</span><span class="rounded-full border border-white/10 px-3 py-2 text-xs text-white/60">Distribuidores</span><span class="rounded-full border border-white/10 px-3 py-2 text-xs text-white/60">Investidores</span><span class="rounded-full border border-white/10 px-3 py-2 text-xs text-white/60">Real estate</span></div>
+        </div>
+        <div class="glass reveal rounded-3xl border border-white/10 p-6 sm:p-8">
+          <p class="eyebrow text-[10px] text-leaf">Oportunidade de parceria</p><h3 class="mt-4 text-2xl font-semibold tracking-tight">Vamos modelar o próximo passo juntos.</h3><p class="mt-3 text-sm leading-6 text-white/55">Converse com a equipe sobre projetos-piloto, fornecimento local, implantação de unidades ou oportunidades de investimento.</p>
+          <ul class="mt-6 space-y-4 text-sm text-white/70">
+            <li class="flex gap-3"><span class="text-leaf">↗</span><span>Produção planejada mais próxima do consumidor</span></li>
+            <li class="flex gap-3"><span class="text-leaf">↗</span><span>Potencial para reduzir perdas e etapas logísticas</span></li>
+            <li class="flex gap-3"><span class="text-leaf">↗</span><span>Modelo modular pensado para crescer por demanda</span></li>
+          </ul>
+          <a href="#contato" class="btn-primary mt-8 flex w-full items-center justify-center gap-3 rounded-full bg-orange px-5 py-3.5 text-sm font-semibold">Converse sobre uma parceria <span aria-hidden="true">↗</span></a>
+          <p class="mt-4 text-[11px] leading-5 text-white/30">Viabilidade econômica e retorno dependem da cultura, escala, localização, custos de energia, operação e modelo comercial de cada projeto.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contato" class="py-24 md:py-32">
+      <div class="mx-auto max-w-4xl px-5 text-center md:px-8">
+        <div class="reveal">
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-leaf/25 bg-leaf/[.08]"><span class="text-2xl text-leaf">✳</span></div>
+          <p class="eyebrow mt-7 text-xs text-leaf">O próximo ciclo começa agora</p>
+          <h2 class="mt-5 text-4xl font-medium tracking-[-.055em] sm:text-5xl md:text-6xl">Vamos cultivar uma nova possibilidade.</h2>
+          <p class="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/55">Se você representa um negócio, investe em tecnologia ou quer acompanhar o desenvolvimento da agricultura vertical brasileira, queremos conversar.</p>
+          <!-- Substitua o e-mail abaixo pelo endereço oficial antes de publicar. -->
+          <a href="mailto:contato@thecubefarm.com.br?subject=Conversa%20com%20The%20Cube%20Farm" class="btn-primary mt-9 inline-flex items-center gap-3 rounded-full bg-orange px-7 py-4 text-sm font-semibold text-white">Entre em contato <span aria-hidden="true">↗</span></a>
+          <p class="mt-4 text-xs text-white/30">E-mail provisório: confirme o endereço oficial antes de colocar a página no ar.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/[.08] bg-[#060807]">
+    <div class="mx-auto max-w-7xl px-5 py-8 md:px-8">
+      <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        <a href="#inicio" class="flex items-center gap-3">
+          <span class="relative flex h-8 w-8 items-center justify-center"><span class="absolute inset-1 rotate-45 border border-leaf/80"></span><span class="absolute inset-[9px] rotate-45 border border-orange"></span><span class="h-1.5 w-1.5 rounded-full bg-leaf"></span></span>
+          <span class="text-sm font-semibold tracking-[-.04em]">the cube<span class="text-leaf"> farm</span></span>
+        </a>
+        <div class="flex flex-wrap gap-x-6 gap-y-3 text-xs text-white/45"><a class="nav-link" href="#manifesto">Sobre</a><a class="nav-link" href="#tecnologia">Tecnologia</a><a class="nav-link" href="#time">Time</a><a class="nav-link" href="#contato">Contato</a><a class="nav-link" href="https://www.linkedin.com/in/nicolasgou/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div>
+      </div>
+      <div class="mt-8 flex flex-col gap-3 border-t border-white/[.07] pt-6 text-[11px] text-white/30 sm:flex-row sm:items-center sm:justify-between">
+        <p>© <span id="year"></span> The Cube Farm. Todos os direitos reservados.</p>
+        <p>Engenharia brasileira. Cultivo pensado em três dimensões.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Animações discretas ao entrar na área visível.
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
